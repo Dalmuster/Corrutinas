@@ -49,8 +49,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
     var tiempo by remember { mutableStateOf(20) }
-    val Corrutina = rememberCoroutineScope()
-    var puntuacion by remember { mutableStateOf(20) }
+    val corrutina = rememberCoroutineScope()
+    var puntuacion by remember { mutableStateOf(0) }
+    var frase = fraseActual.value
+    aux()
 
     Column {
         Row {
@@ -58,7 +60,9 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
                 onClick = {
                     puntuacion = 0
                     tiempo = 20
-                    Corrutina.launch {
+                    frase=fraseAleatoria()
+                    fraseAleatoria()
+                    corrutina.launch {
                         repeat(20) {
                             delay(1000)
                             tiempo -= 1
@@ -78,7 +82,7 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
                     .padding(horizontal = 20.dp)
             )
             Text(
-                text = "lista",
+                text = frase.texto,
                 modifier = modifier
                     .border(
                         width = 2.dp,
@@ -88,14 +92,26 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
             )
             Button(
                 onClick = {
-
+                    if (comprobadorFrase(frase.verdadero,true)!=0){
+                        puntuacion++
+                        frase=fraseAleatoria()
+                    } else {
+                        puntuacion = 0
+                        frase=fraseAleatoria()
+                    }
                 }
             ) {
                Text("V")
             }
             Button(
                 onClick = {
-
+                    if (comprobadorFrase(frase.verdadero,false)!=0){
+                        puntuacion++
+                        frase=fraseAleatoria()
+                    } else {
+                        puntuacion = 0
+                        frase=fraseAleatoria()
+                    }
                 }
             ) {
                 Text("F")

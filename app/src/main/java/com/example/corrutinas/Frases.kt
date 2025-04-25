@@ -31,7 +31,18 @@ fun aux(){
     frases.add(Frase("cinco días tiene la semana sin el Domingo y el Sábado",true))
     frases.add(Frase("una gallina pesa menos que cinco toneladas",true))
 
-    // asignar una frase aleatoria
-    fraseActual.value = frases.random()
+}
 
+fun fraseAleatoria(): Frase {
+    fraseActual.value = frases.random()
+    return fraseActual.value
+}
+
+fun comprobadorFrase(acierto: Boolean, respuesta: Boolean): Int{
+    if (acierto==respuesta){
+        return 1
+    }
+    else {
+        return 0
+    }
 }
