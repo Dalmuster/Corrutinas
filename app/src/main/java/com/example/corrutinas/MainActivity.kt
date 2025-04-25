@@ -50,11 +50,13 @@ class MainActivity : ComponentActivity() {
 fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
     var tiempo by remember { mutableStateOf(20) }
     val Corrutina = rememberCoroutineScope()
+    var puntuacion by remember { mutableStateOf(20) }
 
     Column {
         Row {
             Button(
                 onClick = {
+                    puntuacion = 0
                     tiempo = 20
                     Corrutina.launch {
                         repeat(20) {
@@ -68,6 +70,15 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
             }
             Text(
                 text = "$tiempo",
+                modifier = modifier
+                    .border(
+                        width = 2.dp,
+                        color = Color.Black
+                    )
+                    .padding(horizontal = 20.dp)
+            )
+            Text(
+                text = "lista",
                 modifier = modifier
                     .border(
                         width = 2.dp,
@@ -89,6 +100,15 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
             ) {
                 Text("F")
             }
+            Text(
+                text = "$puntuacion",
+                modifier = modifier
+                    .border(
+                        width = 2.dp,
+                        color = Color.Black
+                    )
+                    .padding(horizontal = 20.dp)
+            )
         }
     }
 }
