@@ -52,10 +52,12 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
     val corrutina = rememberCoroutineScope()
     var puntuacion by remember { mutableStateOf(0) }
     var frase = fraseActual.value
+    var juegoTerminado by remember { mutableStateOf(false) }
     aux()
 
     Column {
         Row {
+            if (juegoTerminado==false){
             Button(
                 onClick = {
                     puntuacion = 0
@@ -67,6 +69,7 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
                             delay(1000)
                             tiempo -= 1
                         }
+                        juegoTerminado=true
                     }
                 }
             ) {
@@ -125,8 +128,13 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
                     )
                     .padding(horizontal = 20.dp)
             )
-        }
+        }   else {
+                Text(
+                    text = "Juego Terminado"
+                )
+            }
     }
+}
 }
 
 @Preview(showBackground = true)
