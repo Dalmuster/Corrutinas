@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -55,35 +57,46 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
     var juegoTerminado by remember { mutableStateOf(false) }
     aux()
 
-    Column {
-        Row {
-            if (juegoTerminado==false){
-            Button(
-                onClick = {
-                    puntuacion = 0
-                    tiempo = 20
-                    frase=fraseAleatoria()
-                    fraseAleatoria()
-                    corrutina.launch {
-                        repeat(20) {
-                            delay(1000)
-                            tiempo -= 1
-                        }
-                        juegoTerminado=true
+
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        Button(
+            onClick = {
+                juegoTerminado = false
+                puntuacion = 0
+                tiempo = 20
+                frase = fraseAleatoria()
+                fraseAleatoria()
+                corrutina.launch {
+                    repeat(20) {
+                        delay(1000)
+                        tiempo -= 1
                     }
+                    juegoTerminado = true
                 }
-            ) {
-                Text("Start")
             }
-            Text(
-                text = "$tiempo",
-                modifier = modifier
-                    .border(
-                        width = 2.dp,
-                        color = Color.Black
-                    )
-                    .padding(horizontal = 20.dp)
-            )
+        ) {
+            Text("Start")
+        }
+        Text(
+            text = "$tiempo",
+            modifier = modifier
+                .border(
+                    width = 2.dp,
+                    color = Color.Black
+                )
+                .padding(horizontal = 20.dp)
+        )
+    }
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+    ){
+        Spacer(modifier = Modifier.padding(top = 70.dp))
+            if (juegoTerminado==false){
+
             Text(
                 text = frase.texto,
                 modifier = modifier
@@ -93,32 +106,44 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
                     )
                     .padding(horizontal = 20.dp)
             )
-            Button(
-                onClick = {
-                    if (comprobadorFrase(frase.verdadero,true)!=0){
-                        puntuacion++
-                        frase=fraseAleatoria()
-                    } else {
-                        puntuacion = 0
-                        frase=fraseAleatoria()
+                Row {
+                    Button(
+                        onClick = {
+                            if (comprobadorFrase(frase.verdadero, true) != 0) {
+                                puntuacion++
+                                frase = fraseAleatoria()
+                            } else {
+                                puntuacion = 0
+                                frase = fraseAleatoria()
+                            }
+                        }
+                    ) {
+                        Text("V")
+                    }
+                    Button(
+                        onClick = {
+                            if (comprobadorFrase(frase.verdadero, false) != 0) {
+                                puntuacion++
+                                frase = fraseAleatoria()
+                            } else {
+                                puntuacion = 0
+                                frase = fraseAleatoria()
+                            }
+                        }
+                    ) {
+                        Text("F")
                     }
                 }
-            ) {
-               Text("V")
-            }
-            Button(
-                onClick = {
-                    if (comprobadorFrase(frase.verdadero,false)!=0){
-                        puntuacion++
-                        frase=fraseAleatoria()
-                    } else {
-                        puntuacion = 0
-                        frase=fraseAleatoria()
-                    }
-                }
-            ) {
-                Text("F")
-            }
+
+        }   else {
+                Text(
+                    text = "Juego Terminado"
+                )
+
+    }
+            Text(
+                text = "Puntuación",
+            )
             Text(
                 text = "$puntuacion",
                 modifier = modifier
@@ -128,13 +153,9 @@ fun JuegoFrases(name: String, modifier: Modifier = Modifier) {
                     )
                     .padding(horizontal = 20.dp)
             )
-        }   else {
-                Text(
-                    text = "Juego Terminado"
-                )
-            }
-    }
-}
+        }
+
+
 }
 
 @Preview(showBackground = true)
